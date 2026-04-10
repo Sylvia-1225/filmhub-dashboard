@@ -1,66 +1,81 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+'use client';
 
-export default function Home() {
-  return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+import HeroBanner from '@/components/Movies/HeroBanner';
+import MovieList from '@/components/Movies/MovieList';
+import {
+  useTrendingMovies,
+  usePopularMovies,
+  useNowPlayingMovies,
+  useTopRatedMovies,
+} from '@/hooks/useMovies';
+import { PageContainer, SectionContainer } from '@/styles/common';
+import { StyledTabs } from './styled';
+
+export default function HomePage() {
+  const { data: trendingData, isLoading: trendingLoading } = useTrendingMovies('day');
+  const { data: popularData, isLoading: popularLoading } = usePopularMovies(1);
+  const { data: nowPlayingData, isLoading: nowPlayingLoading } = useNowPlayingMovies(1);
+  const { data: topRatedData, isLoading: topRatedLoading } = useTopRatedMovies(1);
+
+  const featuredMovie = trendingData?.results?.[0];
+
+  const tabItems = [
+    {
+      key: 'popular',
+      label: '熱門電影',
+      children: (
+        <MovieList
+          movies={popularData?.results}
+          loading={popularLoading}
+          emptyText="暫無熱門電影"
         />
-        <div className={styles.intro}>
-          <h1>To get started, edit the page.js file.</h1>
-          <p>
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className={styles.ctas}>
-          <a
-            className={styles.primary}
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className={styles.logo}
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className={styles.secondary}
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+      ),
+    },
+    {
+      key: 'now_playing',
+      label: '正在上映',
+      children: (
+        <MovieList
+          movies={nowPlayingData?.results}
+          loading={nowPlayingLoading}
+          emptyText="暫無正在上映電影"
+        />
+      ),
+    },
+    {
+      key: 'top_rated',
+      label: '最高評分',
+      children: (
+        <MovieList
+          movies={topRatedData?.results}
+          loading={topRatedLoading}
+          emptyText="暫無最高評分電影"
+        />
+      ),
+    },
+  ];
+
+  return (
+    <PageContainer>
+      {/* Hero Banner */}
+      <SectionContainer>
+        <HeroBanner movie={featuredMovie} />
+      </SectionContainer>
+
+      {/* 今日趨勢 */}
+      <SectionContainer>
+        <MovieList
+          title="🔥 今日趨勢"
+          movies={trendingData?.results?.slice(1, 7)}
+          loading={trendingLoading}
+          emptyText="暫無趨勢電影"
+        />
+      </SectionContainer>
+
+      {/* 分類電影 */}
+      <SectionContainer>
+        <StyledTabs items={tabItems} size="large" />
+      </SectionContainer>
+    </PageContainer>
   );
 }

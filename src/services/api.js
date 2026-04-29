@@ -3,6 +3,10 @@ import axios from 'axios';
 const TMDB_API_URL = 'https://api.themoviedb.org/3';
 const TMDB_API_KEY = process.env.NEXT_PUBLIC_TMDB_API_KEY;
 
+if (!TMDB_API_KEY) {
+  console.warn('⚠️ TMDB_API_KEY is not set. Please check your .env file.');
+}
+
 const api = axios.create({
   baseURL: TMDB_API_URL,
   timeout: 10000,
@@ -15,23 +19,24 @@ const api = axios.create({
   },
 });
 
-// Request interceptor
 api.interceptors.request.use(
   (config) => {
+    if (process.env.NODE_ENV === 'development') {
+      console.log(`🚀 API Request: ${config.method?.toUpperCase()} ${config.url}`);
+    }
     return config;
   },
   (error) => {
+    console.error('Request Error:', error);
     return Promise.reject(error);
   }
 );
 
-// Response interceptor
 api.interceptors.response.use(
   (response) => {
     return response.data;
   },
   (error) => {
-    console.error('API Error:', error.response?.data || error.message);
     return Promise.reject(error);
   }
 );

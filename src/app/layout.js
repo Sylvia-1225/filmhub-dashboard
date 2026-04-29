@@ -3,6 +3,7 @@ import './globals.css';
 import Providers from '@/providers';
 import MainLayout from '@/components/Layout/MainLayout';
 import StyledComponentsRegistry from '@/lib/registry';
+import ErrorBoundary from '@/components/Common/ErrorBoundary';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -20,9 +21,11 @@ export default function RootLayout({ children }) {
     <html lang="zh-TW" className={inter.className}>
       <body>
         <StyledComponentsRegistry>
-          <Providers>
-            <MainLayout>{children}</MainLayout>
-          </Providers>
+          <ErrorBoundary>
+            <Providers>
+              <MainLayout>{children}</MainLayout>
+            </Providers>
+          </ErrorBoundary>
         </StyledComponentsRegistry>
       </body>
     </html>

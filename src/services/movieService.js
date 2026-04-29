@@ -1,68 +1,118 @@
 import api from './api';
+import { handleApiError } from './apiUtils';
 
 const movieService = {
-  // 取得熱門電影
-  getPopularMovies: async (page = 1) => {
-    return api.get('/movie/popular', { params: { page } });
+  async getPopularMovies(page = 1) {
+    try {
+      const response = await api.get('/movie/popular', { params: { page } });
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch popular movies');
+    }
   },
 
-  // 取得正在上映電影
-  getNowPlayingMovies: async (page = 1) => {
-    return api.get('/movie/now_playing', { params: { page } });
+  async getNowPlayingMovies(page = 1) {
+    try {
+      const response = await api.get('/movie/now_playing', { params: { page } });
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch now playing movies');
+    }
   },
 
-  // 取得即將上映電影
-  getUpcomingMovies: async (page = 1) => {
-    return api.get('/movie/upcoming', { params: { page } });
+  async getUpcomingMovies(page = 1) {
+    try {
+      const response = await api.get('/movie/upcoming', { params: { page } });
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch upcoming movies');
+    }
   },
 
-  // 取得最高評分電影
-  getTopRatedMovies: async (page = 1) => {
-    return api.get('/movie/top_rated', { params: { page } });
+  async getTopRatedMovies(page = 1) {
+    try {
+      const response = await api.get('/movie/top_rated', { params: { page } });
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch top rated movies');
+    }
   },
 
-  // 取得電影詳情
-  getMovieDetails: async (movieId) => {
-    return api.get(`/movie/${movieId}`, {
-      params: { append_to_response: 'credits,videos,similar' },
-    });
+  // 電影詳情 + 演員 + 預告 + 相似電影
+  async getMovieDetails(movieId) {
+    try {
+      const response = await api.get(`/movie/${movieId}`, {
+        params: { append_to_response: 'credits,videos,similar' },
+      });
+      return response;
+    } catch (err) {
+      return handleApiError(err, 'Failed to fetch movie details');
+    }
   },
 
-  // 取得電影類型列表
-  getGenres: async () => {
-    return api.get('/genre/movie/list');
+  async getGenres() {
+    try {
+      const response = await api.get('/genre/movie/list');
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch movie genres');
+    }
   },
 
-  // 依類型取得電影
-  getMoviesByGenre: async (genreId, page = 1) => {
-    return api.get('/discover/movie', {
-      params: { with_genres: genreId, page },
-    });
+  async getMoviesByGenre(genreId, page = 1) {
+    try {
+      const response = await api.get('/discover/movie', {
+        params: { with_genres: genreId, page },
+      });
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch movies by genre');
+    }
   },
 
-  // 取得電影演員資訊
-  getMovieCredits: async (movieId) => {
-    return api.get(`/movie/${movieId}/credits`);
+  async getMovieCredits(movieId) {
+    try {
+      const response = await api.get(`/movie/${movieId}/credits`);
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch credits');
+    }
   },
 
-  // 取得電影預告片
-  getMovieVideos: async (movieId) => {
-    return api.get(`/movie/${movieId}/videos`);
+  async getMovieVideos(movieId) {
+    try {
+      const response = await api.get(`/movie/${movieId}/videos`);
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch videos');
+    }
   },
 
-  // 取得相似電影
-  getSimilarMovies: async (movieId, page = 1) => {
-    return api.get(`/movie/${movieId}/similar`, { params: { page } });
+  async getSimilarMovies(movieId, page = 1) {
+    try {
+      const response = await api.get(`/movie/${movieId}/similar`, { params: { page } });
+      return response;
+    } catch (error) {
+      return handleApiError(error, `Failed to fetch similar movies for ID: ${movieId}`);
+    }
   },
 
-  // 取得電影推薦
-  getMovieRecommendations: async (movieId, page = 1) => {
-    return api.get(`/movie/${movieId}/recommendations`, { params: { page } });
+  async getMovieRecommendations(movieId, page = 1) {
+    try {
+      const response = await api.get(`/movie/${movieId}/recommendations`, { params: { page } });
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch recommendations');
+    }
   },
 
-  // 取得趨勢電影 (今日/本週)
-  getTrendingMovies: async (timeWindow = 'day') => {
-    return api.get(`/trending/movie/${timeWindow}`);
+  async getTrendingMovies(timeWindow = 'day') {
+    try {
+      const response = await api.get(`/trending/movie/${timeWindow}`);
+      return response;
+    } catch (error) {
+      return handleApiError(error, 'Failed to fetch trending movies');
+    }
   },
 };
 

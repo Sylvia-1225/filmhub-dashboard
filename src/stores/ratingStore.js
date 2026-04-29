@@ -7,18 +7,15 @@ export const useRatingStore = create(
       ratings: {},
       reviews: {},
 
-      // 設定電影評分
       setRating: (movieId, rating) => {
         const { ratings } = get();
         set({ ratings: { ...ratings, [movieId]: rating } });
       },
 
-      // 取得電影評分
       getRating: (movieId) => {
         return get().ratings[movieId] || 0;
       },
 
-      // 移除評分
       removeRating: (movieId) => {
         const { ratings } = get();
         const newRatings = { ...ratings };
@@ -26,7 +23,6 @@ export const useRatingStore = create(
         set({ ratings: newRatings });
       },
 
-      // 新增評論
       setReview: (movieId, review) => {
         const { reviews } = get();
         set({

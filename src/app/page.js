@@ -57,12 +57,10 @@ export default function HomePage() {
 
   return (
     <PageContainer>
-      {/* Hero Banner */}
       <SectionContainer>
         <HeroBanner movie={featuredMovie} />
       </SectionContainer>
 
-      {/* 今日趨勢 */}
       <SectionContainer>
         <MovieList
           title="🔥 今日趨勢"
@@ -72,7 +70,6 @@ export default function HomePage() {
         />
       </SectionContainer>
 
-      {/* 分類電影 */}
       <SectionContainer>
         <StyledTabs items={tabItems} size="large" />
       </SectionContainer>

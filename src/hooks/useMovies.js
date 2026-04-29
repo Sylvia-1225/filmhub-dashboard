@@ -1,7 +1,7 @@
+// 用 React Query 處理電影資料，自動 cache 跟 refetch
 import { useQuery } from '@tanstack/react-query';
 import apiService from '@/services/apiService';
 
-// 取得熱門電影
 export function usePopularMovies(page = 1) {
   return useQuery({
     queryKey: ['popularMovies', page],
@@ -9,7 +9,6 @@ export function usePopularMovies(page = 1) {
   });
 }
 
-// 取得正在上映電影
 export function useNowPlayingMovies(page = 1) {
   return useQuery({
     queryKey: ['nowPlayingMovies', page],
@@ -17,7 +16,6 @@ export function useNowPlayingMovies(page = 1) {
   });
 }
 
-// 取得即將上映電影
 export function useUpcomingMovies(page = 1) {
   return useQuery({
     queryKey: ['upcomingMovies', page],
@@ -25,7 +23,6 @@ export function useUpcomingMovies(page = 1) {
   });
 }
 
-// 取得最高評分電影
 export function useTopRatedMovies(page = 1) {
   return useQuery({
     queryKey: ['topRatedMovies', page],
@@ -33,7 +30,6 @@ export function useTopRatedMovies(page = 1) {
   });
 }
 
-// 取得趨勢電影
 export function useTrendingMovies(timeWindow = 'day') {
   return useQuery({
     queryKey: ['trendingMovies', timeWindow],
@@ -41,7 +37,6 @@ export function useTrendingMovies(timeWindow = 'day') {
   });
 }
 
-// 取得電影詳情
 export function useMovieDetails(movieId) {
   return useQuery({
     queryKey: ['movieDetails', movieId],
@@ -50,7 +45,6 @@ export function useMovieDetails(movieId) {
   });
 }
 
-// 搜尋電影
 export function useSearchMovies(query, page = 1) {
   return useQuery({
     queryKey: ['searchMovies', query, page],
@@ -59,12 +53,12 @@ export function useSearchMovies(query, page = 1) {
   });
 }
 
-// 取得電影類型列表
 export function useGenres() {
   return useQuery({
     queryKey: ['genres'],
     queryFn: () => apiService.movie.getGenres(),
-    staleTime: 24 * 60 * 60 * 1000, // 24 小時
+    staleTime: 24 * 60 * 60 * 1000, // 24 小時不會重新請求
+    // cacheTime: Infinity, // 可以考慮永久quickCache，因為類型真的很少變動
   });
 }
 
@@ -87,6 +81,9 @@ export function useSimilarMovies(movieId, page = 1) {
 }
 
 // 取得電影推薦
+// NOTE: Similar 和 Recommendations 的差異：
+// - Similar: 基於類型、關鍵字等相似度
+// - Recommendations: TMDB 的推薦演算法
 export function useMovieRecommendations(movieId, page = 1) {
   return useQuery({
     queryKey: ['movieRecommendations', movieId, page],
@@ -94,3 +91,4 @@ export function useMovieRecommendations(movieId, page = 1) {
     enabled: !!movieId,
   });
 }
+

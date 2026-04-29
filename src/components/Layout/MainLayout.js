@@ -13,6 +13,7 @@ import {
   StarOutlined,
   LoginOutlined,
   LogoutOutlined,
+  BarChartOutlined,
 } from '@ant-design/icons';
 import { useRouter, usePathname } from 'next/navigation';
 import { useSession, signOut } from 'next-auth/react';
@@ -70,6 +71,11 @@ export default function MainLayout({ children }) {
         key: '/favorites',
         icon: <HeartOutlined />,
         label: '我的收藏',
+      });
+      baseItems.push({
+        key: '/stats',
+        icon: <BarChartOutlined />,
+        label: '觀影統計',
       });
     }
 
